@@ -1,0 +1,55 @@
+Căn : 
+1. Architecture
+    + Controller: Nên áp dụng try catch bên Controller
+    VD : 
+        public function updatePaymentStatus(BookingUpdatePaymentStatusRequest $request)
+        {
+        try {
+            $this->entryService->updatePaymentStatus($request);
+            return response()->json([]);
+        } catch (AppServiceException $e)
+        {
+            return response()->json([
+                'error_msg' => $e->getMessage(),
+            ], $e->getCode() ?: SERVER_ERROR);
+        }
+    }
+
+    + Model : Khai báo tên model, table, các trường, hằng số -> relations -> các hàm truy vấn
+    + View : Phân chia theo các module , chia các module càng nhỏ càng tốt
+    VD : Các module về textinput, radio, checkbox, ngày tháng năm, pagination ...
+    + css/js : Sau khi dùng template thì những thư viện nào ko dùng đến nên bỏ đi. 
+2. Validate : Nên áp dụng đa dạng các kiểu validate( kết hợp dùng của laravel và js , html )
+3. Convention : 
+4. UI
+5. Function
+6. Other
+
+Tổng kêt
+- Minus
+    - Validate :
+    - Convention -1
++ Lặp lại hằng số created_at, paginate :
+const SORT_USER = 'created_at';
+const SORT_TRANSACTION = 'created_at';
+const SORT_SONG = 'created_at';
+const SORT_SINGER = 'created_at';
+const SORT_ALBUM = 'created_at';
+const SORT_GENRE = 'created_at';
+
+const INDEX_USER = 10;
+const INDEX_GENRE = 10;
+const INDEX_SINGER = 10;
+const INDEX_SONG = 10;
+const INDEX_ALBUM = 10;
+
+    - Function : -2
++ $this->album->storealbum($request); -> nhiều chỗ call đến service không đúng camelCase, mặc dù bên service đặt tên đúng (5 lỗi)
++ Hàm scopeSearch lặp lại nhiều lần trong các models ( 4 lần )
++ Hàm deleteImage lặp nhiều lần trong các service (2 lần)
++ Trong hàm postVNPay các mã vnp_TmnCode  và vnp_HashSecret  nên viết sang file .env
+
+    - UI
+    - Duedate : Đúng hạn
+- Bonus
+    + Viết đúng theo mô hình MVC: +1
